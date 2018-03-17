@@ -81,7 +81,6 @@ def test_permission():
 		print("这个用户没有访问权限")
 		
 		
-		
 #定义命令-添加前台用户
 @manager.option('-t','--telephone',dest='telephone')
 @manager.option('-u','--username',dest='username')
