@@ -3,7 +3,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 
 
-#权限管理
+#定义权限
 class CMSPermission(object):
 	#所有权限
 	ALL_permission = 0b11111111

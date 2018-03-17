@@ -8,8 +8,8 @@ from flask import (
     g
 )
 from .forms import LoginForm,ResetPwdForm,RestEmailForm
-from .models import CMSUser
-from .decorators import Login_Required
+from .models import CMSUser,CMSPermission
+from .decorators import Login_Required,permission_required
 from exts import db, mail
 from flask_mail import Message
 from utils import restful,zlcache
@@ -19,12 +19,11 @@ import random
 
 bp = Blueprint("cms", __name__, url_prefix="/cms")  # 蓝图url
 
-
+#首页
 @bp.route('/')
 @Login_Required
 def index():
     return render_template("cms/cms_index.html")
-
 
 # 注销
 @bp.route('/logout/')
@@ -34,12 +33,49 @@ def logout():
     del session[config.CMS_USER_ID]
     return redirect(url_for('cms.login'))
 
-
 # 个人中心
 @bp.route("/profile/")
 @Login_Required
 def profile():
     return render_template("cms/cms_profile.html")
+
+#CMS后台各模块
+@bp.route('/posts/')
+@Login_Required
+@permission_required(CMSPermission.POSTER)
+def posts():
+    return render_template('cms/cms_posts.html')
+
+@bp.route('/comments/')
+@Login_Required
+@permission_required(CMSPermission.COMMENTER)
+def commends():
+    return render_template('cms/cms_comments.html')
+
+@bp.route('/boards/')
+@Login_Required
+@permission_required(CMSPermission.BOARDER)
+def boards():
+    return render_template('cms/cms_boards.html')
+
+@bp.route('/fusers/')
+@Login_Required
+@permission_required(CMSPermission.FRONTUSER)
+def fusers():
+    return render_template('cms/cms_fusers.html')
+
+@bp.route('/cusers/')
+@Login_Required
+@permission_required(CMSPermission.CMSUSER)
+def cusers():
+    return render_template('cms/cms_cusers.html')
+
+@bp.route('/croles/')
+@Login_Required
+@permission_required(CMSPermission.ALL_permission)
+def croles():
+    return render_template('cms/cms_croles.html')
+
 
 
 ##登陆类视图
@@ -47,7 +83,6 @@ class LoginView(views.MethodView):
 
     def get(self, message=None):
         return render_template('cms/cms_login.html', message=message)
-
     def post(self):
         form = LoginForm(request.form)  # 验证器获取表单数据
         if form.validate():
@@ -60,10 +95,8 @@ class LoginView(views.MethodView):
                 if remember:
                     session.permanent = True  # session 过期时间为31天
                 return redirect(url_for('cms.index'))  # 重定向的蓝图主页（一点要加蓝图名字）
-
             else:
                 return self.get(message="邮箱或密码错误")
-
         else:
             # message = form.errors.popitem()[1][0] #返回任意一项表单验证器定义的错误提示信息！
             message = form.get_error()  # 同上
