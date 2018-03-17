@@ -2,10 +2,15 @@ from  flask_script import Manager
 from flask_migrate import MigrateCommand,Migrate
 from exts import db
 from xmbbs import create_app
-from apps.cms import models as cms_models
+from apps.cms import models as cms_models  #后台模型
 CMSUser = cms_models.CMSUser
 CMSRole = cms_models.CMSRole
 CMSPermission = cms_models.CMSPermission
+
+from apps.front import models as front_models  #前台模型
+FRONTUser = front_models.FrontUser
+
+
 
 app = create_app()
 manager = Manager(app)   #将项目app 加入管理器
@@ -74,8 +79,18 @@ def test_permission():
 		print("这个用户有访问权限")
 	else:
 		print("这个用户没有访问权限")
-
-
+		
+		
+		
+#定义命令-添加前台用户
+@manager.option('-t','--telephone',dest='telephone')
+@manager.option('-u','--username',dest='username')
+@manager.option('-p','--password',dest='password')
+def create_front_user(telephone,username,password):
+	user = FRONTUser(telephone=telephone,username=username,password=password)
+	db.session.add(user)
+	db.session.commit()
+	
 
 if __name__ == '__main__':
 	manager.run()
