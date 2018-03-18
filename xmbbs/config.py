@@ -28,3 +28,10 @@ MAIL_DEFAULT_SENDER = "605882219@qq.com"
 #TLS: 端口是：587
 #SSL：端口是：465
 #QQ 不支持25端口非加密方式发送
+
+
+##阿里大于短信API配置信息
+ALIDAYU_APP_KEY = 'asdfasdfasdfasd'
+ALIDAYU_APP_SECRET = 'uQ5kltRiSwZdfggfddfgClVHOL'
+ALIDAYU_SIGN_NAME = '亿晨装饰'
+ALIDAYU_TEMPLATE_CODE = 'SMS_127166960'
