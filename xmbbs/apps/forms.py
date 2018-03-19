@@ -7,5 +7,6 @@ class BaseForm(FlaskForm):  #表单基类，定义一些通用的方法，供表
 		message = self.errors.popitem()[1][0]
 		return message
 
-
+	def validate(self):
+		return super(BaseForm, self).validate()
 

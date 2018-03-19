@@ -49,14 +49,11 @@ class Captcha(object):
         random.seed()
         return (random.randint(start,end),random.randint(start,end),random.randint(start,end))
 
-
     # 随机选择一个字体
     @classmethod
     def __gene_random_font(cls):
         fonts = [
-            'Courgette-Regular.ttf',
             'LHANDW.TTF',
-            'Lobster-Regular.ttf',
             'verdana.ttf'
         ]
         font = random.choice(fonts)

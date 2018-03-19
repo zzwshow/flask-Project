@@ -19,16 +19,6 @@ Migrate(app,db)          #关联app于db
 
 manager.add_command('db',MigrateCommand)  #将MigrateCommond (包含很多迁移子命令)绑定给db
 
-#定义命令-添加用户！
-@manager.option('-u','--username',dest='username')
-@manager.option('-p','--password',dest='password')
-@manager.option('-e','--email',dest='email')
-def create_cms_user(username,password,email):
-	user =CMSUser(username=username,password=password,email=email)
-	db.session.add(user)
-	db.session.commit()
-	print("cms 用户添加成功！")
-
 
 #在角色CMSRole模型中创建初始化几个角色
 @manager.command
@@ -39,11 +29,11 @@ def create_role():
 
 	#运营
 	operator = CMSRole(name='运营',desc='显示数据，修改个人信息，管理评论，管理帖子，管理前台用户')
-	operator.permissions = CMSPermission.VISITOR|CMSPermission.POSTER|CMSPermission.COMMENTER|CMSPermission.FRONTUSER|CMSPermission.CMSUSER
+	operator.permissions = CMSPermission.VISITOR|CMSPermission.POSTER|CMSPermission.COMMENTER|CMSPermission.FRONTUSER
 
 	#管理员
 	admin = CMSRole(name='管理员',desc='本系统所有权限')
-	admin.permissions = CMSPermission.VISITOR|CMSPermission.POSTER|CMSPermission.COMMENTER|CMSPermission.FRONTUSER|CMSPermission.BOARDER
+	admin.permissions = CMSPermission.VISITOR|CMSPermission.POSTER|CMSPermission.COMMENTER|CMSPermission.FRONTUSER|CMSPermission.CMSUSER
 
 	#开发者
 	developer = CMSRole(name='开发者',desc='开发者专用角色')
@@ -51,6 +41,16 @@ def create_role():
 
 	db.session.add_all([visitor,operator,admin,developer])  #以上角色提交到数据库
 	db.session.commit()
+
+#定义命令-添加后台用户！
+@manager.option('-u','--username',dest='username')
+@manager.option('-p','--password',dest='password')
+@manager.option('-e','--email',dest='email')
+def create_cms_user(username,password,email):
+	user =CMSUser(username=username,password=password,email=email)
+	db.session.add(user)
+	db.session.commit()
+	print("cms 用户添加成功！")
 
 
 #定义命令-添加用户到指定角色中去！

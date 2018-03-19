@@ -2,12 +2,12 @@ from flask import (
 	Blueprint,
 	views,
 	render_template,
-	make_response
+	request
 )
-from utils.captcha import Captcha
-from io import BytesIO
-from exts import alidayu
-
+from .forms import SignupForm
+from exts import db
+from  utils import restful
+from .models import FrontUser
 
 
 bp = Blueprint("front",__name__)
@@ -17,25 +17,28 @@ bp = Blueprint("front",__name__)
 def index():
 	return "front index"
 
-#图形验证码
-@bp.route('/captcha/')
-def graph_captcha():
-	#获取验证码
-	text,image = Captcha.gene_graph_captcha()
-	#字节流
-	out = BytesIO()
-	image.save(out,'png')
-	out.seek(0)
-	resp = make_response(out.read())
-	resp.content_type = 'image/png'
-	return resp
+
 
 
 #注册页面
 class SignupView(views.MethodView):
 	def get(self):
-		return render_template('front/signup.html')
-	
+		return render_template('front/front_signup.html')
+
+	def post(self):
+		form = SignupForm(request.form)
+		if form.validate():
+			telephone = form.telephone.data
+			username = form.username.data
+			password = form.password1.data
+			user = FrontUser(telephone=telephone,username=username,password=password)
+			db.session.add(user)
+			db.session.commit()
+			return restful.success()
+		else:
+			print(form.get_error())
+			return restful.parames_error(message=form.get_error())
+
 
 
 
