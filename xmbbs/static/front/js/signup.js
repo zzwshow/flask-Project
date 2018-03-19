@@ -121,7 +121,12 @@ $(function () {
             },
             'success':function (data) {
                 if (data['code']===200){
-                    window.location='/'     //跳转到首页
+                    var return_to = $("#return-to-span").text(); //返回上一个页面
+                    if (return_to){
+                        window.location = return_to;
+                    }else {
+                        window.location='/';     //跳转到首页
+                    }
                 }else{
                     zlalert.alertInfo(data['message']);
                 }
