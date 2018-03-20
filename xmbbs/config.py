@@ -15,6 +15,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 #临时定义后台 session 变量
 CMS_USER_ID = "aaaa"
+FRONT_USER_ID = 'jkkjkjkj'
 
 #邮箱配置信息
 MAIL_SERVER = "smtp.qq.com"

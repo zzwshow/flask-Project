@@ -1,6 +1,7 @@
 
 body{
     background: #f3f3f3;
+    padding-top: 40px;
 }
 .outer-box{
     background: #fff;
@@ -13,8 +14,8 @@ body{
     padding-top: 40px;
 }
 .logo-box img{
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
 }
 .page-title{
     text-align: center;
