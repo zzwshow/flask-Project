@@ -1,7 +1,8 @@
 DEBUG = True
 import os
 
-SECRET_KEY = os.urandom(24)
+#SECRET_KEY = os.urandom(24)
+SECRET_KEY = "aaaaaaad"
 
 ###数据库
 

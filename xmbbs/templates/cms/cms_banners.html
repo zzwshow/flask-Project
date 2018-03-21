@@ -1,0 +1,62 @@
+{% extends "cms/cms_base.html" %}
+
+{% block title %}轮播图管理{% endblock %}
+
+{% block head %}
+    <style>
+        .top-box{
+            overflow: hidden;
+            background: #ecedf0;
+            padding: 5px;
+        }
+        .top-box button{
+            float: right;
+        }
+    </style>
+{% endblock %}
+
+{% block page_title %}
+    {{ self.title() }}
+{% endblock %}
+
+{% block main_content %}
+    <div class="top-box">
+        <button class="btn btn-warning" data-toggle="modal" data-target="#banner-dialog">添加轮播图</button>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>图片连接</th>
+                <th>跳转连接</th>
+                <th>优先级</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="banner-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">轮播图</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

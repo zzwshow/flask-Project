@@ -172,6 +172,14 @@ def Email_captcha():
 #     return "sucess"
 
 
+#管理轮播图
+@bp.route('/banners/')
+@Login_Required
+def banners():
+    return render_template('cms/cms_banners.html')
+
+
+
 
 ##类视图url 添加到蓝图url中
 bp.add_url_rule('/login/', view_func=LoginView.as_view('login'))
