@@ -5,7 +5,7 @@ $(function () {
         event.preventDefault();
         var email = $("input[name='email']").val();
         if (!email){
-            zlalert.alertInfoToast("请输入邮箱~")
+            zlalert.alertInfoToast("请输入邮箱~");
             return;
         }
         zlajax.get({

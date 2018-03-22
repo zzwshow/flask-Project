@@ -7,8 +7,15 @@ from flask import (
     url_for,
     g
 )
-from .forms import LoginForm,ResetPwdForm,RestEmailForm
+from .forms import (
+    LoginForm,
+    ResetPwdForm,
+    RestEmailForm,
+    AddBannerForm,
+    UpdataBannerForm
+)
 from .models import CMSUser,CMSPermission
+from ..models import BannerModel
 from .decorators import Login_Required,permission_required
 from exts import db, mail
 from flask_mail import Message
@@ -176,8 +183,49 @@ def Email_captcha():
 @bp.route('/banners/')
 @Login_Required
 def banners():
-    return render_template('cms/cms_banners.html')
+    banners = BannerModel.query.all()  #找到数据库中所有的轮播图信息！返回给前端
+    return render_template('cms/cms_banners.html',banners=banners)
 
+
+#添加轮播图
+@bp.route('/abanners/',methods=["POST"])
+@Login_Required
+def abanner():
+    form = AddBannerForm(request.form)
+    if form.validate():
+        name = form.name.data
+        image_url = form.image_url.data
+        link_url = form.link_url.data
+        priority = form.priority.data
+        banner = BannerModel(name=name,image_url=image_url,link_url=link_url,priority=priority)
+        db.session.add(banner)
+        db.session.commit()
+        return restful.success()
+    return restful.parames_error(form.get_error())
+
+#更新修改轮播图信息
+@bp.route('/ubanner/',methods=['POST'])
+@Login_Required
+def ubanner():
+    form = UpdataBannerForm(request.form)
+    if form.validate():
+        banner_id = form.banner_id.data
+        name = form.name.data
+        image_url = form.image_url.data
+        link_url = form.link_url.data
+        priority = form.priority.data
+        banner = BannerModel.query.get(banner_id)
+        if banner:
+            banner.name = name
+            banner.image_url = image_url
+            banner.link_url = link_url
+            banner.priority = priority
+            db.session.commit()
+            return restful.success()
+        else:
+            return restful.parames_error(message="没有这个轮播图")
+    else:
+        return restful.parames_error(form.get_error())
 
 
 
