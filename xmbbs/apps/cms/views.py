@@ -204,7 +204,7 @@ def abanner():
     return restful.parames_error(form.get_error())
 
 #更新修改轮播图信息
-@bp.route('/ubanner/',methods=['POST'])
+@bp.route('/ubanners/',methods=['POST'])
 @Login_Required
 def ubanner():
     form = UpdataBannerForm(request.form)
@@ -227,7 +227,22 @@ def ubanner():
     else:
         return restful.parames_error(form.get_error())
 
-
+#删除轮播图
+@bp.route('/debanner/',methods=['POST'])
+@Login_Required
+def debanner():
+    banner_id = request.form.get('banner_id')
+    print(banner_id)
+    if not banner_id:
+        return restful.parames_error(message="请传入轮播图ID")
+    banner = BannerModel.query.get(banner_id)
+    if not banner:
+        return restful.parames_error(message="没有这个轮播图")
+    else:
+        db.session.delete(banner)  #如果banner 存在数据库中 就删除
+        db.session.commit()
+        return restful.success()
+    
 
 ##类视图url 添加到蓝图url中
 bp.add_url_rule('/login/', view_func=LoginView.as_view('login'))

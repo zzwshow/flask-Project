@@ -33,7 +33,7 @@
         </thead>
         <tbody>
             {% for banner in banners %}
-                <tr data-name="{{ banner.name }}" data-image="{{ banner.image_url }}" data-link="{{ banner.link_url }}" data-priority="{{ banner.priority }}">
+                <tr data-name="{{ banner.name }}" data-image="{{ banner.image_url }}" data-link="{{ banner.link_url }}" data-priority="{{ banner.priority }}" data-id="{{ banner.id }}">
                     <td>{{ banner.name }}</td>
                     <td><a href="{{ banner.image_url }}" target="_blank">{{ banner.image_url }}</a></td>
                     <td><a href="{{ banner.link_url }}" target="_blank">{{ banner.link_url }}</a></td>

@@ -36,7 +36,7 @@ class SignupView(views.MethodView):
 		if form.validate():
 			telephone = form.telephone.data
 			username = form.username.data
-			password = form.password.data
+			password = form.password1.data
 			telephone_db = FrontUser.query.filter_by(telephone=telephone).first()
 			if telephone_db:
 				return restful.parames_error(message="手机号已存在")
