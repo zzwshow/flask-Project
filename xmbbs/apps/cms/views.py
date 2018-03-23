@@ -232,7 +232,6 @@ def ubanner():
 @Login_Required
 def debanner():
     banner_id = request.form.get('banner_id')
-    print(banner_id)
     if not banner_id:
         return restful.parames_error(message="请传入轮播图ID")
     banner = BannerModel.query.get(banner_id)
