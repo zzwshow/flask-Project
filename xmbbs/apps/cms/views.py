@@ -112,21 +112,21 @@ def uboard():
 @Login_Required
 @permission_required(CMSPermission.BOARDER)
 def dboard():
-    form = UpBoardForm(request.form)
-    if form.validate():
-        board_id = form.board_id.data
-        board = BoardModel.query.get(board_id)
-        if board:
-            db.session.delete(board)
-            db.session.commit()
-            return restful.success()
-        else:
-            return restful.parames_error(message="版块不存在")
+    board_id = request.form.get('board_id')
+    if not board_id:
+        return restful.parames_error(message='请传入版块ID')
+    board = BoardModel.query.get(board_id)
+    if not board:
+        return restful.parames_error(message='版块不存在！')
     else:
-        return restful.parames_error(message=form.get_error())
+        db.session.delete(board)
+        db.session.commit()
+        return restful.success()
+    
+        
 
 
-
+####前台用户管理
 @bp.route('/fusers/')
 @Login_Required
 @permission_required(CMSPermission.FRONTUSER)

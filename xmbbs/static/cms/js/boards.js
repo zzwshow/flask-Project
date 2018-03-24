@@ -30,7 +30,7 @@ $(function () {
 $(function () {
     $(".edit-board-btn").click(function (event) {
         event.preventDefault();
-        var self = $(this);
+        var self = $(this);  //self代表.edit-board-btn按钮自己
         var tr = self.parent().parent();  //找到编辑按钮的两层父及标签tr
 
         var name = tr.attr('data-name');
@@ -64,5 +64,38 @@ $(function () {
 });
 
 
+//删除版块
+$(function () {
+    $('.delete-board-btn').click(function (event) {
+        event.preventDefault();
+        var self = $(this);
+
+        var tr = self.parent().parent();
+        var board_id = tr.attr('data-id');
+        zlalert.alertConfirm({
+            'title':'删除版块',
+            'msg':'您确定要删除这个版块吗？',
+            'confirmButtonText':'删除',
+            'confirmCallback':function () {
+                zlajax.post({
+                   'url':'/cms/dboard/',
+                   'data':{
+                       'board_id':board_id
+                   },
+                    'success':function (data) {
+                       if(data['code']===200){
+                           window.location.reload();
+                       }else {
+                           zlalert.alertInfo(data['message']);
+                       }
+
+                    }
+                });
+
+            }
+        });
+
+    });
+});
 
 

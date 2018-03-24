@@ -11,7 +11,7 @@ from exts import db
 from  utils import restful,safeutils
 from .models import FrontUser
 import config
-from ..models import BannerModel
+from ..models import BannerModel,BoardModel
 
 
 bp = Blueprint("front",__name__)
@@ -20,9 +20,12 @@ bp = Blueprint("front",__name__)
 #首页
 @bp.route('/')
 def index():
+	#显示四个轮播图
 	banner = BannerModel.query.order_by(BannerModel.priority.desc()).limit(4)
+	boards = BoardModel.query.all()   #所有版块
 	context = {
-		'banners':banner
+		'banners':banner,
+		'boards':boards
 	}
 	return render_template('front/front_index.html',**context)
 
