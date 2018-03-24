@@ -12,10 +12,12 @@ from .forms import (
     ResetPwdForm,
     RestEmailForm,
     AddBannerForm,
-    UpdataBannerForm
+    UpdataBannerForm,
+    AddBoardForm,
+    UpBoardForm
 )
 from .models import CMSUser,CMSPermission
-from ..models import BannerModel
+from ..models import BannerModel,BoardModel
 from .decorators import Login_Required,permission_required
 from exts import db, mail
 from flask_mail import Message
@@ -59,11 +61,71 @@ def posts():
 def commends():
     return render_template('cms/cms_comments.html')
 
+####版块管理
 @bp.route('/boards/')
 @Login_Required
 @permission_required(CMSPermission.BOARDER)
 def boards():
-    return render_template('cms/cms_boards.html')
+    board_info = BoardModel.query.all()
+    context = {
+        'boards':board_info
+    }
+    return render_template('cms/cms_boards.html',**context)
+
+
+#添加版块
+@bp.route('/aboards/',methods=['POST'])
+@Login_Required
+@permission_required(CMSPermission.BOARDER)
+def aboards():
+    form = AddBoardForm(request.form)
+    if form.validate():
+        name = form.name.data
+        board = BoardModel(name=name)
+        db.session.add(board)
+        db.session.commit()
+        return restful.success()
+    else:
+        return restful.parames_error(message=form.get_error())
+        
+#更新编辑版块
+@bp.route('/uboard/',methods=['POST'])
+@Login_Required
+@permission_required(CMSPermission.BOARDER)
+def uboard():
+    form = UpBoardForm(request.form)
+    if form.validate():
+        board_id = form.board_id.data
+        name = form.name.data
+        board = BoardModel.query.get(board_id)
+        if board:
+            board.name = name
+            db.session.commit()
+            return restful.success()
+        else:
+            return restful.parames_error(message="没有这个版块")
+    else:
+        return restful.parames_error(message=form.get_error())
+    
+#删除版块
+@bp.route('/dboard/',methods=['POST'])
+@Login_Required
+@permission_required(CMSPermission.BOARDER)
+def dboard():
+    form = UpBoardForm(request.form)
+    if form.validate():
+        board_id = form.board_id.data
+        board = BoardModel.query.get(board_id)
+        if board:
+            db.session.delete(board)
+            db.session.commit()
+            return restful.success()
+        else:
+            return restful.parames_error(message="版块不存在")
+    else:
+        return restful.parames_error(message=form.get_error())
+
+
 
 @bp.route('/fusers/')
 @Login_Required
@@ -183,7 +245,7 @@ def Email_captcha():
 @bp.route('/banners/')
 @Login_Required
 def banners():
-    banners = BannerModel.query.all()  #找到数据库中所有的轮播图信息！返回给前端
+    banners = BannerModel.query.order_by(BannerModel.priority.desc()).all()  #找到数据库中所有的轮播图信息！返回给前端
     return render_template('cms/cms_banners.html',banners=banners)
 
 

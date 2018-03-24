@@ -8,7 +8,7 @@ CMSRole = cms_models.CMSRole
 CMSPermission = cms_models.CMSPermission
 
 from apps.front import models as front_models  #前台模型
-from apps.models import BannerModel   #轮播图模板
+from apps.models import BannerModel,BoardModel   #轮播图模板
 FRONTUser = front_models.FrontUser
 
 

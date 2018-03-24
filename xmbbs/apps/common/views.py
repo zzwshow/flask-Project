@@ -1,9 +1,10 @@
-from flask import Blueprint,request,make_response
+from flask import Blueprint,request,make_response,jsonify
 from exts import alidayu
 from utils import restful,zlcache
 from utils.captcha import Captcha
 from .forms import SMSCaptchaForm
 from io import BytesIO
+import qiniu
 
 
 bp = Blueprint("common",__name__,url_prefix="/c")
@@ -57,3 +58,19 @@ def graph_captcha():
 	resp = make_response(out.read())
 	resp.content_type = 'image/png'
 	return resp
+
+#七牛静态图片上传接口(将token返回个前端)
+@bp.route('/uptoken/')
+def uptoken():
+	access_key = "aGsmFPlxj1ahhEh_QaevKtSZila_JA5icJAwkxbw"
+	secret_key = "Q_6ZaieEOyISuMNSvPBYGYCNGZyvGvGPMXn0QS5e"
+	q = qiniu.Auth(access_key,secret_key)   #定义一个七牛链接对象
+
+	bucket = "altzzw"  #七牛中定义的存储空间名
+	token = q.upload_token(bucket)    #生成token
+	return jsonify({'uptoken':token})   #以json格式返回token给前端，key必须是“uptoken”
+
+
+
+
+

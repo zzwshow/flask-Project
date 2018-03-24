@@ -118,7 +118,19 @@ $(function () {
 });
 
 
+//轮播图上传图片
+$(function () {
+    zlqiniu.setUp({
+        'domain':'http://p61b8ovzy.bkt.clouddn.com/',
+        'browse_btn':'upload-btn',
+        'uptoken_url':'/c/uptoken/',
+        'success':function (up,file,info) {
+            var imageInput = $("input[name='image_url']");
+            imageInput.val(file.name);
 
+        }
+    });
+});
 
 
 
