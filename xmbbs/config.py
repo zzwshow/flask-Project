@@ -37,3 +37,13 @@ ALIDAYU_APP_KEY = "sdfsdfsadf"
 ALIDAYU_APP_SECRET = "uQ5kltRasdfasdfxClVHOL"
 ALIDAYU_SIGN_NAME = '张志伟'
 ALIDAYU_TEMPLATE_CODE = 'SMS_127166960'
+
+####ueditor 上传文件配置
+IMAGE_DIR = os.path.join(os.path.dirname(__file__),'images')  #这是本地存储路径
+UEDITOR_UPLOAD_PATH = IMAGE_DIR
+#以下行是设置上传到七牛云的配置！
+# UEDITOR_UPLOAD_TO_QINIU = True
+# UEDITOR_QINIU_ACCESS_KEY = ""
+# UEDITOR_QINIU_SECRET_KEY = ""
+# UEDITOR_QINIU_BUCKET_NAME = ""
+# UEDITOR_QINIU_DOMAIN = ""
