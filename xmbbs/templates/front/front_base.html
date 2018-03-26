@@ -3,10 +3,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
     {% include 'common/_heads.html' %}
     <link rel="stylesheet" href="{{ url_for('static',filename='front/css/front_base.css') }}">
-    <title>{% block title %}{% endblock %}</title>
-    {% block head %} {% endblock %}
+    {% block head %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -41,10 +41,9 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                       <li><a href="#">个人中心</a></li>
                       <li><a href="#">设置</a></li>
-                      <li><a href="#">注销</a></li>
-
                   </ul>
               </li>
+              <li><a href="{{ url_for('front.logout') }}">注销</a></li>
           {% else %}
               <li><a href="{{ url_for('front.signin') }}">登录</a></li>
               <li><a href="{{ url_for('front.signup') }}">注册</a></li>
