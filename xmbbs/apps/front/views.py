@@ -23,20 +23,29 @@ bp = Blueprint("front",__name__)
 #首页
 @bp.route('/')
 def index():
+	board_id = request.args.get('bd',type=int,default=None)
+	page = request.args.get(get_page_parameter(),type=int, default=1)  # 获取当前在第几页
 	#显示四个轮播图
 	banner = BannerModel.query.order_by(BannerModel.priority.desc()).limit(4)
 	boards = BoardModel.query.all()   #所有版块
 	# posts = PostModel.query.all()  #所有帖子
-	page = request.args.get(get_page_parameter(),type=int,default=1) #获取当前在第几页
 	start = (page-1)*config.PRE_PAGE
-	end = start +config.PRE_PAGE
-	posts = PostModel.query.slice(start,end)
-	pagination = Pagination(bs_version=3,page=page,total=PostModel.query.count()) #分页
+	end = start + config.PRE_PAGE
+	pests = None
+	total = 0
+	if board_id:
+		posts = PostModel.query.filter_by(board_id=board_id).slice(start,end)
+		total = PostModel.query.filter_by(board_id=board_id).count()
+	else:
+		total = PostModel.query.count()
+		posts = PostModel.query.slice(start,end)
+	pagination = Pagination(bs_version=3,page=page,total=total) #分页
 	context = {
 		'banners':banner,
 		'boards':boards,
 		'posts':posts,
-		'pagination':pagination
+		'pagination':pagination,
+		'current_board':board_id
 	}
 	return render_template('front/front_index.html',**context)
 

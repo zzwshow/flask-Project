@@ -24,10 +24,13 @@
                 {% else %}
                     <div class="item">
                 {% endif %}
-            <a href="{{ banner.link_url }}"><img src="{{ banner.image_url }}" alt="..."></a>
-            </div>
+                    <a href="{{ banner.link_url }}">
+                        <img src="{{ banner.image_url }}" alt="...">
+                    </a>
+                </div>
             {% endfor %}
             </div>
+
             <!-- Controls -->
             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -71,16 +74,24 @@
     </div>
 
 
-<div class="sm-container">
-    <div style="padding-bottom: 10px">
-        <a href="{{ url_for('front.apost') }}" class="btn btn-warning btn-block">发布帖子</a>
+    <div class="sm-container">
+        <div style="padding-bottom: 10px">
+            <a href="{{ url_for('front.apost') }}" class="btn btn-warning btn-block">发布帖子</a>
+        </div>
+        <div class="list-group">
+            {% if current_board %}
+                <a href="/" class="list-group-item">所有版块</a>
+            {% else %}
+                <a href="/" class="list-group-item active">所有版块</a>
+            {% endif %}
+            {% for board in boards %}
+                {% if board.id == current_board %}
+                    <a href="{{ url_for('front.index',bd=board.id) }}" class="list-group-item active">{{ board.name }}</a>
+                {% else %}
+                    <a href="{{ url_for('front.index',bd=board.id) }}" class="list-group-item">{{ board.name }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-    <div class="list-group">
-        <a href="#" class="list-group-item active" style="text-align: center;">所有版块</a>
-        {% for board in boards %}
-            <a href="#" class="list-group-item">{{ board.name }}</a>
-        {% endfor %}
-    </div>
-</div>
 
 {% endblock %}
