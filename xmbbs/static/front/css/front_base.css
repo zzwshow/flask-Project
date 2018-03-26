@@ -6,7 +6,7 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
     list-style: none;
 }
 .main-container{
-    width: 1200px;
+    width: 1170px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -17,6 +17,6 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
 }
 
 .sm-container{
-    width: 280px;
+    width: 250px;
     float: right;
 }

@@ -5,7 +5,8 @@ from flask import (
 	request,
 	session,
 	url_for,
-	redirect
+	redirect,
+	g
 )
 from .forms import SignupForm,SigninForm,AddPostForm
 from exts import db
@@ -14,6 +15,7 @@ from .models import FrontUser
 import config
 from ..models import BannerModel,BoardModel,PostModel
 from .decorators import Login_Required
+from flask_paginate import Pagination,get_page_parameter #分页工具
 
 bp = Blueprint("front",__name__)
 
@@ -24,11 +26,17 @@ def index():
 	#显示四个轮播图
 	banner = BannerModel.query.order_by(BannerModel.priority.desc()).limit(4)
 	boards = BoardModel.query.all()   #所有版块
-	posts = PostModel.query.all()  #所有帖子
+	# posts = PostModel.query.all()  #所有帖子
+	page = request.args.get(get_page_parameter(),type=int,default=1) #获取当前在第几页
+	start = (page-1)*config.PRE_PAGE
+	end = start +config.PRE_PAGE
+	posts = PostModel.query.slice(start,end)
+	pagination = Pagination(bs_version=3,page=page,total=PostModel.query.count()) #分页
 	context = {
 		'banners':banner,
 		'boards':boards,
-		'posts':posts
+		'posts':posts,
+		'pagination':pagination
 	}
 	return render_template('front/front_index.html',**context)
 
@@ -123,6 +131,7 @@ def apost():
 			else:
 				post = PostModel(title=title,content=content)
 				post.board = board   #将帖子加入到相应的版块中
+				post.author = g.front_user
 				db.session.add(post)
 				db.session.commit()
 				return restful.success()
