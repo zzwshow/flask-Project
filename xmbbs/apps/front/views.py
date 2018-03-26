@@ -23,9 +23,11 @@ def index():
 	#显示四个轮播图
 	banner = BannerModel.query.order_by(BannerModel.priority.desc()).limit(4)
 	boards = BoardModel.query.all()   #所有版块
+	posts = PostModel.query.all()  #所有帖子
 	context = {
 		'banners':banner,
-		'boards':boards
+		'boards':boards,
+		'posts':posts
 	}
 	return render_template('front/front_index.html',**context)
 
