@@ -4,7 +4,8 @@ from flask import (
 	render_template,
 	request,
 	session,
-	url_for
+	url_for,
+	redirect
 )
 from .forms import SignupForm,SigninForm,AddPostForm
 from exts import db
@@ -87,7 +88,15 @@ class SigninView(views.MethodView):
 
 		else:
 			return restful.parames_error(message=form.get_error())
-		
+
+#用户注销
+@bp.route('/logout/')
+@Login_Required
+def logout():
+	del session[config.FRONT_USER_ID]
+	return redirect(url_for('front.signin'))
+
+
 #类视图注册路由
 bp.add_url_rule('/signup/',view_func=SignupView.as_view('signup'))
 bp.add_url_rule('/signin/',view_func=SigninView.as_view('signin'))
