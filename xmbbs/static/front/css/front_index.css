@@ -15,24 +15,24 @@
     overflow: hidden;
     padding: 10px;
 }
-.post-group-head{
-    overflow: hidden;
-    list-style: none;
-}
+/*.post-group-head{*/
+    /*overflow: hidden;*/
+    /*list-style: none;*/
+/*}*/
 
-.post-group-head li{
-    float: left;
-    padding: 5px 10px;
-}
+/*.post-group-head li{*/
+    /*float: left;*/
+    /*padding: 5px 10px;*/
+/*}*/
 
-.post-group-head li a {
-    color: #00a0e9;
-    font-size: 20px;
-}
+/*.post-group-head li a {*/
+    /*color: #00a0e9;*/
+    /*font-size: 20px;*/
+/*}*/
 
-.post-group-head li.active{
-    background: #ccc;
-}
+/*.post-group-head li.active{*/
+    /*background: #ccc;*/
+/*}*/
 
 .post-list-group{
     margin-top: 20px;

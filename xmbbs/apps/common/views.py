@@ -2,9 +2,13 @@ from flask import Blueprint,request,make_response,jsonify
 from exts import alidayu
 from utils import restful,zlcache
 from utils.captcha import Captcha
-from .forms import SMSCaptchaForm
+from .forms import SMSCaptchaForm,UploadForm
 from io import BytesIO
 import qiniu
+from werkzeug.datastructures import CombinedMultiDict #将两个不可变类型组合在一起
+from werkzeug.utils import secure_filename  #安全效验文件名
+import os
+Upload_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),'static')
 
 
 bp = Blueprint("common",__name__,url_prefix="/c")
@@ -60,15 +64,28 @@ def graph_captcha():
 	return resp
 
 #七牛静态图片上传接口(将token返回个前端)
-@bp.route('/uptoken/')
-def uptoken():
-	access_key = "aGsmFPlxj1ahhEh_QaevKtSZila_JA5icJAwkxbw"
-	secret_key = "Q_6ZaieEOyISuMNSvPBYGYCNGZyvGvGPMXn0QS5e"
-	q = qiniu.Auth(access_key,secret_key)   #定义一个七牛链接对象
+# @bp.route('/uptoken/')
+# def uptoken():
+# 	access_key = "aGsmFPlxj1ahhEh_QaevKtSZila_JA5icJAwkxbw"
+# 	secret_key = "Q_6ZaieEOyISuMNSvPBYGYCNGZyvGvGPMXn0QS5e"
+# 	q = qiniu.Auth(access_key,secret_key)   #定义一个七牛链接对象
+#
+# 	bucket = "altzzw"  #七牛中定义的存储空间名
+# 	token = q.upload_token(bucket)    #生成token
+# 	return jsonify({'uptoken':token})   #以json格式返回token给前端，key必须是“uptoken”
 
-	bucket = "altzzw"  #七牛中定义的存储空间名
-	token = q.upload_token(bucket)    #生成token
-	return jsonify({'uptoken':token})   #以json格式返回token给前端，key必须是“uptoken”
+#上传本地文件夹
+@bp.route('/upload/')
+def upload():
+	form = UploadForm(request.files)
+	if form.validate():
+		banner = request.files.get("banner")
+		filename = secure_filename(banner.filename)
+		print(filename)
+		banner.save(os.path.join(Upload_path,'images'))
+		return restful.success()
+	else:
+		return restful.parames_error(form.get_error())
 
 
 

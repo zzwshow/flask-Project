@@ -29,7 +29,8 @@ class PostModel(db.Model):
 	content = db.Column(db.Text,nullable=False)
 	create_time = db.Column(db.DateTime,default=datetime.now)
 	board_id = db.Column(db.Integer,db.ForeignKey('board.id')) #定义外键
-	author_id = db.Column(db.String(100),db.ForeignKey("front_user.id"),nullable=False)
+	author_id = db.Column(db.String(100),db.ForeignKey('front_user.id'),nullable=False)
+
 	board = db.relationship("BoardModel",backref='posts') #定义关系
 	author = db.relationship('FrontUser',backref='posts')
 	

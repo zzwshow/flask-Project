@@ -1,7 +1,9 @@
 from apps.forms import BaseForm
-from wtforms import StringField
+from wtforms import StringField,FileField
 from wtforms.validators import Regexp,InputRequired
 import hashlib
+from flask_wtf.file import FileAllowed,FileRequired
+
 
 class SMSCaptchaForm(BaseForm):
 	salt = "qkasdfwermnkskjak%#$@"  #加盐字符串
@@ -28,3 +30,6 @@ class SMSCaptchaForm(BaseForm):
 		else:
 			return False
 
+#上传轮播图文件夹
+class UploadForm(BaseForm):
+	banner = FileField(validators=[FileRequired(),FileAllowed('png','jpg')])
