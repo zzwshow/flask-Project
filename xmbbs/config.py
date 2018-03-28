@@ -6,7 +6,7 @@ SECRET_KEY = "aaaaaaad"
 
 ###数据库
 
-DB_URI = "mysql+pymysql://root:wei3511@127.0.0.1:3306/xmbbs_db?charset=utf8"
+DB_URI = "mysql+pymysql://root:wei3511@127.0.0.1:3306/xmbbs_db1?charset=utf8"
 
 
 
@@ -15,8 +15,8 @@ SQLALCHEMY_DATABASE_URI = DB_URI
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 #临时定义后台 session 变量
-CMS_USER_ID = "aaaa"
-FRONT_USER_ID = 'jkkjkjkj'
+CMS_USER_ID = "随便写"
+FRONT_USER_ID = '随便写'
 
 #邮箱配置信息
 MAIL_SERVER = "smtp.qq.com"

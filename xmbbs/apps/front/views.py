@@ -29,16 +29,16 @@ def index():
 	banner = BannerModel.query.order_by(BannerModel.priority.desc()).limit(4)
 	boards = BoardModel.query.all()   #所有版块
 	# posts = PostModel.query.all()  #所有帖子
-	start = (page-1)*config.PRE_PAGE
+	start = (page -1)*config.PRE_PAGE
 	end = start + config.PRE_PAGE
-	pests = None
+	posts = None
 	total = 0
 	if board_id:
-		posts = PostModel.query.filter_by(board_id=board_id).slice(start,end)
-		total = PostModel.query.filter_by(board_id=board_id).count()
+		posts = PostModel.query.filter(PostModel.board_id==board_id).slice(start,end)
+		total = PostModel.query.filter(PostModel.board_id==board_id).count()
 	else:
-		total = PostModel.query.count()
 		posts = PostModel.query.slice(start,end)
+		total = PostModel.query.filter(PostModel.board_id==board_id).count()
 	pagination = Pagination(bs_version=3,page=page,total=total) #分页
 	context = {
 		'banners':banner,
