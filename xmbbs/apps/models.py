@@ -2,6 +2,7 @@
 from exts import db
 from datetime import datetime
 
+
 #轮播图模板
 class BannerModel(db.Model):
 	__tablename__  = 'banner'
@@ -33,4 +34,15 @@ class PostModel(db.Model):
 
 	board = db.relationship("BoardModel",backref='posts') #定义关系
 	author = db.relationship('FrontUser',backref='posts')
+
+#评论模型
+class CommentMode(db.Model):
+	__tablename__ = 'comment'
+	id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+	content = db.Column(db.Text,nullable=False)
+	create_time = db.Column(db.DateTime,default=datetime.now)
+	post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
+	author_id = db.Column(db.String(100),db.ForeignKey('front_user.id'))
 	
+	post = db.relationship('PostModel',backref='comments')
+	author = db.relationship('FrontUser',backref='comments')

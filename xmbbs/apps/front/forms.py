@@ -44,8 +44,11 @@ class AddPostForm(BaseForm):
 	content = StringField(validators=[InputRequired(message="请输入内容！")])
 	board_id = IntegerField(validators=[InputRequired(message="请输入版块id！")])
 	
-
-
+#添加评论表单验证
+class AcommentForm(BaseForm):
+	content = StringField(validators=[InputRequired(message="请输入评论内容")])
+	post_id = StringField(validators=[InputRequired(message="请输入帖子ID")])
+	
 
 
 

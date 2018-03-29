@@ -9,12 +9,12 @@ from flask import (
 	g,
 	abort
 )
-from .forms import SignupForm,SigninForm,AddPostForm
+from .forms import SignupForm,SigninForm,AddPostForm,AcommentForm
 from exts import db
 from  utils import restful,safeutils
 from .models import FrontUser
 import config
-from ..models import BannerModel,BoardModel,PostModel
+from ..models import BannerModel,BoardModel,PostModel,CommentMode
 from .decorators import Login_Required
 from flask_paginate import Pagination,get_page_parameter #分页工具
 
@@ -149,7 +149,7 @@ def apost():
 			return restful.parames_error(message=form.get_error())
 
 
-#贴在详情
+#帖子详情
 @bp.route('/p/<post_id>/')
 def pdetail(post_id):
 	post = PostModel.query.get(post_id)
@@ -158,9 +158,27 @@ def pdetail(post_id):
 	return render_template('front/front_pdetail.html',post=post)
 
 
-
-
-
+#添加评论
+@bp.route('/acomment/',methods=['POST'])
+@Login_Required
+def acomment():
+	form = AcommentForm(request.form)
+	if form.validate():
+		content = form.content.data
+		post_id = form.post_id.data
+		post = PostModel.query.get(post_id)
+		if post:
+			comment =  CommentMode(content=content)
+			comment.post = post
+			comment.author = g.front_user
+			db.session.add(comment)
+			db.session.commit()
+			return restful.success()
+		else:
+			return restful.parames_error(message='没有这篇帖子')
+	else:
+		return restful.parames_error(form.get_error())
+	
 
 
 
