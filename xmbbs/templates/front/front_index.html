@@ -59,7 +59,7 @@
                                 alt="">
                         </div>
                         <div class="post-into-group">
-                            <p class="post-title">{{ post.title }}</p>
+                            <p class="post-title"><a href="{{ url_for('front.pdetail',post_id=post.id) }}">{{ post.title }}</a></p>
                             <p class="post-info">
                                 <span>作者：{{ post.author.username }}</span>
                                 <span>发表时间：{{ post.create_time }}</span>
@@ -70,6 +70,7 @@
                     </li>
                 {% endfor %}
             </ul>
+{#                分页#}
             <div style="text-align: center">
                 {{ pagination.links }}
             </div>

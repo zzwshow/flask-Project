@@ -6,7 +6,8 @@ from flask import (
 	session,
 	url_for,
 	redirect,
-	g
+	g,
+	abort
 )
 from .forms import SignupForm,SigninForm,AddPostForm
 from exts import db
@@ -146,5 +147,35 @@ def apost():
 				return restful.success()
 		else:
 			return restful.parames_error(message=form.get_error())
+
+
+#贴在详情
+@bp.route('/p/<post_id>/')
+def pdetail(post_id):
+	post = PostModel.query.get(post_id)
+	if not post:
+		abort(404)
+	return render_template('front/front_pdetail.html',post=post)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

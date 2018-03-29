@@ -1,5 +1,5 @@
 from .views import bp
-from flask import session,g
+from flask import session,g,render_template
 from .models import FrontUser
 import config
 
@@ -14,6 +14,10 @@ def my_before_request():
 			g.front_user = user  #将user信息绑定给g.front_user对象上，供jinja2 使用
 		
 
+#定义一个404页面
+@bp.errorhandler
+def page_not_found():
+	return render_template('front/front_404.html'),404
 
 
 
