@@ -48,7 +48,6 @@ class AddPostForm(BaseForm):
 class AcommentForm(BaseForm):
 	content = StringField(validators=[InputRequired(message="请输入评论内容")])
 	post_id = StringField(validators=[InputRequired(message="请输入帖子ID")])
-	
 
 
 
